@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script data-require="three.js@0.0.0-r61" data-semver="0.0.0-r61"
+            src="//cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+    <link href="https://fonts.cdnfonts.com/css/games" rel="stylesheet">
+</head>
+
+<body>
+    <div id="mainMenu">
+        <div id="mainMenuContent">
+            <h1>Welcome to the Game</h1>
+            <h2>3D Pong Game</h2>
+            <button id="startButton">Start</button>
+
+            <!-- Kontejner pro slider a texty -->
+            <div class="slider-container">
+                <!-- Text "1 v AI" -->
+                <span class="slider-text">1 vs AI</span>
+                <!-- Rounded switch (slider) -->
+                <label class="switch">
+                    <input type="checkbox" id="mySlider">
+                    <span class="slider round"></span>
+                </label>
+                <!-- Text "1 v 1" -->
+                <span class="slider-text">1 vs 1</span>
+            </div>
+
+        </div>
+    </div>
+    <div id="game-container">
+        <div id="scoreBoard">Player 1: 0 Player 2: 0</div>
+        <div id="container"></div>
+    </div>
+    <script src="script.js"></script>
+
+    <script>
+        var slider = document.getElementById("mySlider");
+
+        slider.addEventListener("change", function() {
+            var sliderValue = slider.checked ? 2 : 1; // Pokud je zaškrtnuto, hodnota je 2, jinak 1
+            console.log("Hodnota slideru: " + sliderValue);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+body, html {
+    overflow: hidden;
+    font-family: 'Games', sans-serif;
+}
+
+body {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin: auto;
+}
+
+#mainMenu {
+    width: 100%;
+    height: 100%;
+    /*background: linear-gradient(to right top, #8d9198, #779dab, #5b9f99, #47a45b, #dde86b);*/
+    background: hsla(240, 6%, 55%, 1);
+
+    background: linear-gradient(45deg, hsla(240, 6%, 55%, 1) 26%, hsla(0, 81%, 42%, 1) 100%);
+
+    background: -moz-linear-gradient(45deg, hsla(240, 6%, 55%, 1) 26%, hsla(0, 81%, 42%, 1) 100%);
+
+    background: -webkit-linear-gradient(45deg, hsla(240, 6%, 55%, 1) 26%, hsla(0, 81%, 42%, 1) 100%);
+
+    position: absolute;
+    text-align: center;
+}
+#mainMenuContent {
+    text-align: center; /* Zarovnání obsahu na střed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Výška celého okna pro vertikální zarovnání */
+}
+#mainMenuContent > * {
+    /*margin-bottom: 10px;*/
+}
+#mainMenuContent h1 {
+    font-size: 40px;
+    margin: 0;
+    /*margin-bottom: -10px;*/
+}
+#mainMenuContent h2 {
+    /*font-size: 20px;*/
+    /*margin-bottom: 10px;*/
+}
+#startButton {
+    /*barva podkladu*/
+    background-color: #4CAF50;
+    /*barva písma*/
+    color: white;
+    padding: 15px 100px;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 5px;
+    font-family: 'Games', sans-serif;
+}
+#startButton:hover {
+    background-color: #357935; /* Nová barva při hoveru */
+}
+
+#game-container {
+    display: none;
+    text-align: center;
+    background-color: #333;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#container {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0 auto;
+}
+
+#scoreBoard {
+    color: white;
+    font-size: 24px;
+    /*font-family: Arial, sans-serif;*/
+    background-color: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 3px auto;
+    width: 20%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+
+.slider-text {
+    font-size: 25px;
+    margin: 0 15px 0 15px; /* nastavte vhodný odstup mezi textem a sliderem */
+    padding-top: 20px;
+}
+#mySlider {
+    margin: 0 10px; /* nastavte vhodný odstup mezi sliderem a textem */
+}
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-top: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
