@@ -1,9 +1,18 @@
 /**
  * Pong ThreeJS Game
- * JS Script for Player VS AI
+ * JS Script for Player VS Player
  */
 
 // console.clear();
+
+// Příznak pro sledování stavu kláves
+let keyState = {
+    ArrowUp: false,
+    ArrowDown: false
+};
+
+const ballSpeed = 5;
+const paddleSpeed = 10;
 
 function startGameFunction(window, document, THREE) {
     // "constants"
@@ -13,8 +22,8 @@ function startGameFunction(window, document, THREE) {
         ASPECT = WIDTH / HEIGHT,
         NEAR = 0.1,
         FAR = 10000,
-        FIELD_WIDTH = 1200,
-        FIELD_LENGTH = 3000,
+        FIELD_WIDTH = WIDTH / 2,
+        FIELD_LENGTH = HEIGHT,
         BALL_RADIUS = 20,
         PADDLE_WIDTH = 200,
         PADDLE_HEIGHT = 30,
@@ -35,7 +44,7 @@ function startGameFunction(window, document, THREE) {
         let direction = Math.random() > 0.5 ? -1 : 1;
         ball.$velocity = {
             x: 0,
-            z: direction * 20
+            z: direction * ballSpeed
         };
         ball.$stopped = false;
     }
@@ -168,6 +177,8 @@ function startGameFunction(window, document, THREE) {
             processBallMovement();
             processCpuPaddle();
 
+            movePaddle(); // Nová funkce pro pohyb pálky
+
             renderer.render(scene, camera);
         }
     }
@@ -196,8 +207,16 @@ function startGameFunction(window, document, THREE) {
         renderer.setClearColor(0x848493, 1);
         container.appendChild(renderer.domElement);
 
-        camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-        camera.position.set(0, 100, FIELD_LENGTH / 2 + 500);
+        // Změna na ortografickou kameru
+        camera = new THREE.OrthographicCamera(
+            -FIELD_WIDTH / 2, FIELD_WIDTH / 2,
+            HEIGHT / 2, -HEIGHT / 2,
+            NEAR, FAR
+        );
+
+        // Nastavení pozice kamery nad hracím polem
+        camera.position.set(0, FIELD_LENGTH, 0);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
 
         scene = new THREE.Scene();
         scene.add(camera);
@@ -219,19 +238,16 @@ function startGameFunction(window, document, THREE) {
         ball = new THREE.Mesh(ballGeometry, ballMaterial);
         scene.add(ball);
 
-        camera.lookAt(ball.position);
+        // camera.lookAt(ball.position);
 
         mainLight = new THREE.HemisphereLight(0xFFFFFF, 0x003300, 1);
         scene.add(mainLight);
 
-        camera.lookAt(ball.position);
+        // camera.lookAt(ball.position);
 
         updateScoreBoard();
         startRender();
 
-        // on mousemove change camera and paddle position
-        renderer.domElement.addEventListener('mousemove', containerMouseMove);
-        renderer.domElement.style.cursor = 'none';
 
         // Inicializace resize by window resize
         onWindowResize(); // call při startu, aby se nastavila správná velikost
@@ -252,7 +268,50 @@ function startGameFunction(window, document, THREE) {
     }
 
     init();
+
+
+
+
+// Funkce pro zpracování stisknutí klávesy
+    function handleKeyDown(event) {
+        if (event.key in keyState) {
+            keyState[event.key] = true;
+        }
+
+        console.log('Stisknuto: ' + event.key);
+    }
+
+// Funkce pro zpracování uvolnění klávesy
+    function handleKeyUp(event) {
+        if (event.key in keyState) {
+            keyState[event.key] = false;
+        }
+    }
+
+// Funkce pro pohyb pálky
+    function movePaddle() {
+        if (keyState.ArrowUp) {
+            // Pohyb pálky doprava
+            paddle1.position.x += paddleSpeed;
+        }
+        if (keyState.ArrowDown) {
+            // Pohyb pálky doleva
+            paddle1.position.x -= paddleSpeed;
+        }
+
+        // Omezení pohybu pálky uvnitř hracího pole
+        const halfPaddleWidth = PADDLE_WIDTH / 2;
+        const halfFieldWidth = FIELD_WIDTH / 2;
+
+        paddle1.position.x = Math.min(halfFieldWidth - halfPaddleWidth, Math.max(-halfFieldWidth + halfPaddleWidth, paddle1.position.x));
+    }
+
+    // Přidat posluchače událostí pro šipky
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
 }
+
+
 
 // Funkce pro zobrazení hry a skrytí tlačítka "Start"
 function showGame() {
