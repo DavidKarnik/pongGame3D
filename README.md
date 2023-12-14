@@ -1,4 +1,4 @@
-Pong Three.js Demo
+3D Pong Three.js Game
 ======
 
 #MIT License
