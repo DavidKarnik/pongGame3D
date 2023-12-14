@@ -6,6 +6,7 @@
             src="//cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
     <link rel="stylesheet" href="style.css"/>
     <link href="https://fonts.cdnfonts.com/css/games" rel="stylesheet">
+    <script src="app.js"></script>
 </head>
 
 <body>
@@ -17,12 +18,10 @@
         <div id="mainMenuContent">
             <h1>Welcome to the Game</h1>
             <h2>3D Pong Game</h2>
-            <button id="startButton" onclick="startButtonPushed()">Start</button>
+            <button id="startButton" onclick="showGame()">Start</button>
 
-            <!-- Kontejner pro slider a texty -->
             <div class="slider-container">
                 <span class="slider-text">1 vs AI</span>
-                <!-- Rounded switch (slider) -->
                 <label class="switch">
                     <input type="checkbox" id="mySlider">
                     <span class="slider round"></span>
@@ -36,34 +35,6 @@
         <div id="scoreBoard">Player 1: 0 Player 2: 0</div>
         <div id="container"></div>
     </div>
-
-    <script>
-        let slider = document.getElementById("mySlider");
-        let scriptName = 'script.js';
-
-        slider.addEventListener("change", function() {
-            let sliderValue = slider.checked ? 2 : 1; // Pokud je zaškrtnuto, hodnota je 2, jinak 1
-            console.log("Hodnota slideru: " + sliderValue);
-
-            if (sliderValue === 1) {
-                scriptName = 'script.js';
-            } else {
-                scriptName = 'script2.js';
-            }
-        });
-
-        function startButtonPushed() {
-            // console.log("startButtonPushed");
-            let scriptElement = document.createElement('script');
-            scriptElement.src = scriptName;
-            document.head.appendChild(scriptElement);
-            // console.log("scriptName: " + scriptName);
-
-            scriptElement.onload = function () {
-                showGame();
-            };
-        }
-    </script>
 </body>
 
 </html>
