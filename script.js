@@ -22,13 +22,14 @@ function startGameFunction(window, document, THREE) {
         //get the scoreboard element.
         scoreBoard = document.getElementById('scoreBoard'),
 
-        //declare members.
         container, renderer, camera, mainLight,
         scene, ball, paddle1, paddle2, field, running,
         score = {
             player1: 0,
             player2: 0
         };
+
+    const hitSound = new Audio('./sounds/pew.mp3');
 
 
     function startBallMovement() {
@@ -40,7 +41,7 @@ function startGameFunction(window, document, THREE) {
         ball.$stopped = false;
     }
 
-    function processCpuPaddle() {
+    function processAIPaddle() {
         let ballPos = ball.position,
             cpuPos = paddle2.position;
 
@@ -98,7 +99,7 @@ function startGameFunction(window, document, THREE) {
         ballPos.x += ball.$velocity.x;
         ballPos.z += ball.$velocity.z;
 
-        // add an arc to the ball's flight. Comment this out for boring, flat pong.
+        // add an arc to the ball's flight.
         ballPos.y = -((ballPos.z - 1) * (ballPos.z - 1) / 5000) + 435;
     }
 
@@ -111,6 +112,8 @@ function startGameFunction(window, document, THREE) {
     function hitBallBack(paddle) {
         ball.$velocity.x = (ball.position.x - paddle.position.x) / 5;
         ball.$velocity.z *= -1;
+
+        hitSound.play().then(r => console.log("Hit -> play PEW"));
     }
 
     function isPaddle2Collision() {
@@ -166,7 +169,7 @@ function startGameFunction(window, document, THREE) {
             requestAnimationFrame(render);
 
             processBallMovement();
-            processCpuPaddle();
+            processAIPaddle();
 
             renderer.render(scene, camera);
         }
@@ -233,7 +236,7 @@ function startGameFunction(window, document, THREE) {
         renderer.domElement.addEventListener('mousemove', containerMouseMove);
         renderer.domElement.style.cursor = 'none';
 
-        // Inicializace resize by window resize
+        // Initialize resize by window resize
         onWindowResize(); // call při startu, aby se nastavila správná velikost
         window.addEventListener('resize', onWindowResize, false);
     }
@@ -267,7 +270,3 @@ function showGame() {
     // start Wave -> Game
     startGameFunction(window, window.document, window.THREE)
 }
-
-// Přidejte obsluhu kliknutí na tlačítko "Start"
-// const startButton = document.getElementById('startButton');
-// startButton.addEventListener('click', showGame);

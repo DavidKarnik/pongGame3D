@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <audio autoplay loop>
+        <source src="./sounds/background_music.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
     <div id="mainMenu">
         <div id="mainMenuContent">
             <h1>Welcome to the Game</h1>
@@ -17,14 +21,12 @@
 
             <!-- Kontejner pro slider a texty -->
             <div class="slider-container">
-                <!-- Text "1 v AI" -->
                 <span class="slider-text">1 vs AI</span>
                 <!-- Rounded switch (slider) -->
                 <label class="switch">
                     <input type="checkbox" id="mySlider">
                     <span class="slider round"></span>
                 </label>
-                <!-- Text "1 v 1" -->
                 <span class="slider-text">1 vs 1</span>
             </div>
 
@@ -34,16 +36,7 @@
         <div id="scoreBoard">Player 1: 0 Player 2: 0</div>
         <div id="container"></div>
     </div>
-<!--    <script src="script.js"></script>-->
 
-<!--    <script>-->
-<!--        var slider = document.getElementById("mySlider");-->
-
-<!--        slider.addEventListener("change", function() {-->
-<!--            var sliderValue = slider.checked ? 2 : 1; // Pokud je zaškrtnuto, hodnota je 2, jinak 1-->
-<!--            console.log("Hodnota slideru: " + sliderValue);-->
-<!--        });-->
-<!--    </script>-->
     <script>
         let slider = document.getElementById("mySlider");
         let scriptName = 'script.js';
@@ -60,15 +53,11 @@
         });
 
         function startButtonPushed() {
-
-
-
-
-            console.log("startButtonPushed");
+            // console.log("startButtonPushed");
             let scriptElement = document.createElement('script');
             scriptElement.src = scriptName;
             document.head.appendChild(scriptElement);
-            console.log("scriptName: " + scriptName);
+            // console.log("scriptName: " + scriptName);
 
             scriptElement.onload = function () {
                 showGame();

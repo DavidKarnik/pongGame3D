@@ -7,6 +7,8 @@
 
 // Příznak pro sledování stavu kláves
 let keyState = {
+    keyW: false,
+    keyS: false,
     ArrowUp: false,
     ArrowDown: false
 };
@@ -15,11 +17,8 @@ const ballSpeed = 5;
 const paddleSpeed = 10;
 
 function startGameFunction(window, document, THREE) {
-    // "constants"
     let WIDTH = window.innerWidth - (0.05 * window.innerWidth),
         HEIGHT = window.innerHeight - (0.1 * window.innerHeight),
-        VIEW_ANGLE = 45,
-        ASPECT = WIDTH / HEIGHT,
         NEAR = 0.1,
         FAR = 10000,
         FIELD_WIDTH = WIDTH / 2,
@@ -31,13 +30,15 @@ function startGameFunction(window, document, THREE) {
         //get the scoreboard element.
         scoreBoard = document.getElementById('scoreBoard'),
 
-        //declare members.
         container, renderer, camera, mainLight,
         scene, ball, paddle1, paddle2, field, running,
         score = {
             player1: 0,
             player2: 0
         };
+
+    const hitSound = new Audio('./sounds/pew.mp3');
+
 
 
     function startBallMovement() {
@@ -47,17 +48,6 @@ function startGameFunction(window, document, THREE) {
             z: direction * ballSpeed
         };
         ball.$stopped = false;
-    }
-
-    function processCpuPaddle() {
-        let ballPos = ball.position,
-            cpuPos = paddle2.position;
-
-        if (cpuPos.x - 100 > ballPos.x) {
-            cpuPos.x -= Math.min(cpuPos.x - ballPos.x, 6);
-        } else if (cpuPos.x - 100 < ballPos.x) {
-            cpuPos.x += Math.min(ballPos.x - cpuPos.x, 6);
-        }
     }
 
     function processBallMovement() {
@@ -106,9 +96,6 @@ function startGameFunction(window, document, THREE) {
         //update the ball's position.
         ballPos.x += ball.$velocity.x;
         ballPos.z += ball.$velocity.z;
-
-        // add an arc to the ball's flight. Comment this out for boring, flat pong.
-        ballPos.y = -((ballPos.z - 1) * (ballPos.z - 1) / 5000) + 435;
     }
 
     function isSideCollision() {
@@ -120,6 +107,8 @@ function startGameFunction(window, document, THREE) {
     function hitBallBack(paddle) {
         ball.$velocity.x = (ball.position.x - paddle.position.x) / 5;
         ball.$velocity.z *= -1;
+
+        hitSound.play();
     }
 
     function isPaddle2Collision() {
@@ -175,9 +164,8 @@ function startGameFunction(window, document, THREE) {
             requestAnimationFrame(render);
 
             processBallMovement();
-            processCpuPaddle();
 
-            movePaddle(); // Nová funkce pro pohyb pálky
+            movePaddles();
 
             renderer.render(scene, camera);
         }
@@ -207,7 +195,7 @@ function startGameFunction(window, document, THREE) {
         renderer.setClearColor(0x848493, 1);
         container.appendChild(renderer.domElement);
 
-        // Změna na ortografickou kameru
+        // Změna na ortografickou kameru -> pro zachování rozměrů objektů bez ohledu na vzdálenost
         camera = new THREE.OrthographicCamera(
             -FIELD_WIDTH / 2, FIELD_WIDTH / 2,
             HEIGHT / 2, -HEIGHT / 2,
@@ -238,12 +226,8 @@ function startGameFunction(window, document, THREE) {
         ball = new THREE.Mesh(ballGeometry, ballMaterial);
         scene.add(ball);
 
-        // camera.lookAt(ball.position);
-
         mainLight = new THREE.HemisphereLight(0xFFFFFF, 0x003300, 1);
         scene.add(mainLight);
-
-        // camera.lookAt(ball.position);
 
         updateScoreBoard();
         startRender();
@@ -262,41 +246,52 @@ function startGameFunction(window, document, THREE) {
         return paddle;
     }
 
-    function containerMouseMove(e) {
-        let mouseX = e.clientX;
-        camera.position.x = paddle1.position.x = -((WIDTH - mouseX) / WIDTH * FIELD_WIDTH) + (FIELD_WIDTH / 2);
-    }
 
     init();
 
 
-
-
-// Funkce pro zpracování stisknutí klávesy
+    // Funkce pro zpracování stisknutí klávesy
     function handleKeyDown(event) {
-        if (event.key in keyState) {
+        // console.log('Stisknuto: ' + event.key);
+        if (event.key === 'w') {
+            keyState["keyW"] = true;
+        } else if (event.key === 's') {
+            keyState["keyS"] = true;
+        } else if (event.key === 'ArrowUp') {
+            keyState[event.key] = true;
+        } else if (event.key === 'ArrowDown') {
             keyState[event.key] = true;
         }
-
-        console.log('Stisknuto: ' + event.key);
     }
 
-// Funkce pro zpracování uvolnění klávesy
+    // Funkce pro zpracování uvolnění klávesy
     function handleKeyUp(event) {
-        if (event.key in keyState) {
+        if (event.key === 'w') {
+            keyState["keyW"] = false;
+        } else if (event.key === 's') {
+            keyState["keyS"] = false;
+        } else if (event.key === 'ArrowUp') {
+            keyState[event.key] = false;
+        } else if (event.key === 'ArrowDown') {
             keyState[event.key] = false;
         }
     }
 
-// Funkce pro pohyb pálky
-    function movePaddle() {
-        if (keyState.ArrowUp) {
-            // Pohyb pálky doprava
-            paddle1.position.x += paddleSpeed;
-        }
-        if (keyState.ArrowDown) {
-            // Pohyb pálky doleva
-            paddle1.position.x -= paddleSpeed;
+    // Funkce pro pohyb pálek
+    function movePaddles() {
+        switch (true) {
+            case keyState.ArrowUp:
+                paddle1.position.x -= paddleSpeed;
+                break;
+            case keyState.ArrowDown:
+                paddle1.position.x += paddleSpeed;
+                break;
+            case keyState.keyW:
+                paddle2.position.x -= paddleSpeed;
+                break;
+            case keyState.keyS:
+                paddle2.position.x += paddleSpeed;
+                break;
         }
 
         // Omezení pohybu pálky uvnitř hracího pole
@@ -304,13 +299,13 @@ function startGameFunction(window, document, THREE) {
         const halfFieldWidth = FIELD_WIDTH / 2;
 
         paddle1.position.x = Math.min(halfFieldWidth - halfPaddleWidth, Math.max(-halfFieldWidth + halfPaddleWidth, paddle1.position.x));
+        paddle2.position.x = Math.min(halfFieldWidth - halfPaddleWidth, Math.max(-halfFieldWidth + halfPaddleWidth, paddle2.position.x));
     }
 
-    // Přidat posluchače událostí pro šipky
+    // posluchače událostí pro klávesy
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 }
-
 
 
 // Funkce pro zobrazení hry a skrytí tlačítka "Start"
@@ -326,7 +321,3 @@ function showGame() {
     // start Wave -> Game
     startGameFunction(window, window.document, window.THREE)
 }
-
-// Přidejte obsluhu kliknutí na tlačítko "Start"
-// const startButton = document.getElementById('startButton');
-// startButton.addEventListener('click', showGame);

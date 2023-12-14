@@ -23,6 +23,3 @@ Then I decided to make the ball arc with a simple parabolic movement... because 
 was bored.
 
 ... then a simple scoreboard. That's pretty much it.
-
-#PLEASE: If you take this and make anything with it, I'd LOVE to see it, email me
-at: ben@benlesh.com
