@@ -14,7 +14,7 @@ let keyState = {
     ArrowDown: false
 };
 
-let ballSpeed = 15;
+let ballSpeed = 25;
 const paddleSpeed = 10;
 
 function startGameFunction(window, document, THREE) {
@@ -42,10 +42,15 @@ function startGameFunction(window, document, THREE) {
         };
 
     const hitSound = new Audio('./sounds/pew.mp3');
+
+    const playSound = new Audio('./sounds/background_music.mp3');
+    playSound.play();
+
     if(gameMode === 2){
-        ballSpeed = 5
-        FIELD_WIDTH = WIDTH / 2
-        FIELD_LENGTH = HEIGHT
+        ballSpeed = 20
+        BALL_RADIUS = 40
+        PADDLE_WIDTH = 400
+        PADDLE_HEIGHT = 60
     }
 
     function startBallMovement() {
@@ -137,7 +142,9 @@ function startGameFunction(window, document, THREE) {
         ballPos.z += ball.$velocity.z;
 
         // add an arc to the ball's flight.
-        ballPos.y = -((ballPos.z - 1) * (ballPos.z - 1) / 5000) + 435;
+        if (gameMode === 1) {
+            ballPos.y = -((ballPos.z - 1) * (ballPos.z - 1) / 5000) + 435;
+        }
     }
 
     function isSideCollision() {
@@ -259,13 +266,15 @@ function startGameFunction(window, document, THREE) {
         } else {
             // 1 vs 1
             // Změna na ortografickou kameru -> pro zachování rozměrů objektů bez ohledu na vzdálenost
-            camera = new THREE.OrthographicCamera(
-                -FIELD_WIDTH / 2, FIELD_WIDTH / 2,
-                HEIGHT / 2, -HEIGHT / 2,
-                NEAR, FAR
-            );
-            // Nastavení pozice kamery nad hracím polem
-            camera.position.set(0, FIELD_LENGTH, 0);
+            // camera = new THREE.PerspectiveCamera(
+            //     -FIELD_WIDTH / 2, FIELD_WIDTH / 2,
+            //     HEIGHT / 2, -HEIGHT / 2,
+            //     NEAR, FAR
+            // );
+            camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+
+            // pozice kamery nad hracím polem
+            camera.position.set(FIELD_WIDTH, FIELD_LENGTH * 0.60, 0);
             camera.lookAt(new THREE.Vector3(0, 0, 0));
         }
 
@@ -296,7 +305,7 @@ function startGameFunction(window, document, THREE) {
     }
 
     function addPaddle() {
-        let paddleGeometry = new THREE.CubeGeometry(PADDLE_WIDTH, PADDLE_HEIGHT, 10, 1, 1, 1),
+        let paddleGeometry = new THREE.CubeGeometry(PADDLE_WIDTH, PADDLE_HEIGHT, 20, 1, 1, 1),
             paddleMaterial = new THREE.MeshLambertMaterial({color: 0xf28179}),
             paddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
         scene.add(paddle);
