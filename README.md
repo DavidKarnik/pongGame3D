@@ -11,3 +11,5 @@
   3.3 Grafická prezentace aplikace (jak UI, tak vlastní 3D scéna) </br>
 
 ## Obrázky
+
+![1vAI](https://github.com/DavidKarnik/pongGame3D/assets/91788719/8905a78a-372c-4638-998e-a12937e1a121)
