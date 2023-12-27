@@ -9,3 +9,5 @@
   3.1 AI protivník </br>
   3.2 Přehrávání zvuků </br>
   3.3 Grafická prezentace aplikace (jak UI, tak vlastní 3D scéna) </br>
+
+## Obrázky
