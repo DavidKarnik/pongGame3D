@@ -1,15 +1,7 @@
 3D Pong Three.js Game
 ======
 
-#MIT License
-
-Started playing around with Three.js. Feel free to play with the code.
-
-1. It has a few bugs, I'm sure. There are no tests, I was just playing.
-2. It's not the best organized code. (Again, just playing around)
-3. Lists look better with three things in them.
-
-I hope this benefits someone.
+Zadaní:
 
 1. Pomocí knihovny Three.js implementujte 3D variantu počítačové hry Pong.
 2. Základní varianta předpokládá ovládání 2 hráči za pomoci klávesnice
