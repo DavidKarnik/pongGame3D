@@ -11,6 +11,13 @@ Started playing around with Three.js. Feel free to play with the code.
 
 I hope this benefits someone.
 
+1. Pomocí knihovny Three.js implementujte 3D variantu počítačové hry Pong.
+2. Základní varianta předpokládá ovládání 2 hráči za pomoci klávesnice
+3. Pro získání lepšího hodnocení je možné aplikaci vylepšovat a vyšperkovat v různých oblastech
+3.1. AI protivník
+3.2. Přehrávání zvuků
+3.3. Grafická prezentace aplikace (jak UI, tak vlastní 3D scéna)
+
 ## Some points about the code:
 
 I started off with the `init()` function. Basically I created a renderer, a camera,
