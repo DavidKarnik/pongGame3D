@@ -13,3 +13,4 @@
 ## Obrázky
 
 ![1vAI](https://github.com/DavidKarnik/pongGame3D/assets/91788719/8905a78a-372c-4638-998e-a12937e1a121)
+![1v1](https://github.com/DavidKarnik/pongGame3D/assets/91788719/24e9eb34-a272-44b6-8585-f0d7544cb235)
