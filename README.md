@@ -1,7 +1,7 @@
 3D Pong Three.js Game
 ======
 
-Zadaní:
+**Zadaní**:
 
 1. Pomocí knihovny Three.js implementujte 3D variantu počítačové hry Pong.
 2. Základní varianta předpokládá ovládání 2 hráči za pomoci klávesnice
